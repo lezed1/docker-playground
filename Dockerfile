@@ -1,2 +1,2 @@
 FROM ubuntu
-RUN apt-get install wget
+RUN apt-get install htop

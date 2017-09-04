@@ -1,5 +1,5 @@
 FROM ubuntu
 RUN apt-get update
 RUN apt-get upgrade
-RUN apt-get install wget
+RUN apt-get install iotop
 CMD echo "Hello"

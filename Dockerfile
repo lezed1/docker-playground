@@ -1,2 +1,2 @@
 FROM ubuntu
-RUN apt-get install docker
+RUN apt-get install wget

@@ -2,9 +2,13 @@
 
 set -euo pipefail
 
+export DEBIAN_FRONTEND=noninteractive
+
 packages=(
     # general
     autossh
+    htop
+    ipython
     jq
     libboost-python-dev
     libdc1394-22-dev
@@ -12,15 +16,15 @@ packages=(
     libncurses-dev
     libpopt-dev
     libpython-dev
-    pandoc
+    neovim
     stow
-	htop
-	neovim
+    wget
 
     # mission
-    python3-termcolor
 
     # control
+    python-numpy
+    python-scipy
 
     # serial
     libgtest-dev
@@ -38,7 +42,6 @@ packages=(
     # trogdor
     expect-dev
     python-dbus
-    python-termcolor
 
     # visualizer
     libconfig++
@@ -66,11 +69,9 @@ packages=(
     liblzma-dev
 )
 
-export DEBIAN_FRONTEND=noninteractive
-
 apt-get install -y software-properties-common # For add-apt-repository
 add-apt-repository ppa:neovim-ppa/stable
-apt-get update
+apt-get update -y
 
 apt-get install -y ${packages[@]}
 

@@ -1,28 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-packages2=(
+packages=(
     eventlet
     gevent
     matplotlib
-    numpy
-    posix_ipc
-    # cairo
-    pygame
-    # gobject3
-    # pysqlite
-    # redis
-    # six
-    # systemd
-    # termcolor
-    # wxPython
-)
-packages3=(
     cython
-    eventlet
     flask
-    gevent
-    ipython
     paramiko
     pyserial
     pyyaml
@@ -36,5 +20,21 @@ packages3=(
     watchdog
 )
 
-pip2 install ${packages2[@]}
-pip3 install ${packages3[@]}
+packages2=(
+    posix_ipc
+    # cairo
+    pygame
+    # gobject3
+    # pysqlite
+    # systemd
+    # wxPython
+)
+packages3=(
+    posix_ipc
+)
+
+pip2 install --upgrade pip
+pip3 install --upgrade pip
+
+pip2 install ${packages[@]} ${packages2[@]}
+pip3 install ${packages[@]} ${packages3[@]}

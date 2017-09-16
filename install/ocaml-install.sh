@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-DEBIAN_FRONTEND=noninteractive apt-get -y install ocaml opam m4
+packages=(
+    opam
+    m4
+)
+
+export DEBIAN_FRONTEND=noninteractive
+apt-get install -y ${packages[@]}

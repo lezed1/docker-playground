@@ -15,13 +15,11 @@ export PYTHONPATH=$software_path:  # we think we need the : at the end
 export GOPATH=$software_path/gocode:$GOPATH
 # So Go will be able to use libshm.
 export CGO_LDFLAGS=-L$software_path/link-stage
-export CHICKEN_REPOSITORY=${CUAUV_SOFTWARE}/link-stage/chicken
-export CSC_OPTIONS="-L$CUAUV_SOFTWARE/link-stage -C -I$CUAUV_SOFTWARE -I$CUAUV_SOFTWARE -Wl,-rpath,${CUAUV_SOFTWARE}/link-stage"
 export PROMPT_COLOR=red
 # Like PYTHONPATH, but for Guile.
 export GUILE_LOAD_PATH="$CUAUV_SOFTWARE/guile"
 # Can set to other locales in the conf directory.
-export CUAUV_LOCALE="teagle"
+export CUAUV_LOCALE="simulator"
 export CUAUV_VEHICLE="artemis"
 export CUAUV_CONTEXT="development" # Optionally set to reduce build dependencies, see configure.py
 
@@ -47,7 +45,6 @@ alias auv-mr="auv-mission-runner"
 alias auv-pt="auv-pooltest"
 alias aslam="auv-aslam-cli"
 alias shm="auv-shm-cli"
-alias av="auv-visiond"
 
 # Check pooltest status
 if [[ "$CUAUV_CONTEXT" = "vehicle" ]]; then

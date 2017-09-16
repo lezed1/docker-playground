@@ -1,40 +1,43 @@
-FROM ubuntu:xenial
+FROM phusion/baseimage:0.9.22
+CMD ["/sbin/my_init"]
+RUN rm -f /etc/service/sshd/down
 
-RUN mkdir /root/dependencies
+RUN mkdir /dependencies && chmod -R 755 /dependencies
 
-ADD install/foundation-install.sh /root/dependencies/
-RUN bash /root/dependencies/foundation-install.sh
+COPY install/foundation-install.sh /dependencies/
+RUN bash /dependencies/foundation-install.sh
 
-ADD install/apt-install.sh /root/dependencies/
-RUN bash /root/dependencies/apt-install.sh
+COPY install/setup-user.sh /dependencies/
+RUN bash /dependencies/setup-user.sh
 
-ADD install/pip-install.sh /root/dependencies/
-RUN bash /root/dependencies/pip-install.sh
+COPY install/ocaml-install.sh /dependencies/
+RUN bash /dependencies/ocaml-install.sh
+COPY install/ocaml-user-install.sh /dependecies/
+RUN setuser software /dependecies/ocaml-user-install.sh
 
-ADD install/misc-install.sh /root/dependencies/
-RUN bash /root/dependencies/misc-install.sh
+COPY install/spacemacs-install.sh /dependencies/
+RUN bash /dependencies/spacemacs-install.sh
+COPY install/dot-spacemacs /home/software/.spacemacs
+RUN setuser software emacs --batch -u software --kill
 
-RUN apt-get install -y wget
-ADD install/spacemacs-install.sh /root/dependencies/
-RUN bash /root/dependencies/spacemacs-install.sh
-ADD install/dot-spacemacs /home/software/.spacemacs
-RUN su software -c "emacs --batch -u software --kill"
+COPY install/node-install.sh /dependencies/
+RUN bash /dependencies/node-install.sh
 
-ADD install/extra-install.sh /root/dependencies/
-RUN bash /root/dependencies/extra-install.sh
+COPY install/apt-install.sh /dependencies/
+RUN bash /dependencies/apt-install.sh
 
-ADD install/ocaml-install.sh /root/dependencies/
-RUN bash /root/dependencies/ocaml-install.sh
-ADD install/ocaml-user-install.sh /home/software/
+COPY install/pip-install.sh /dependencies/
+RUN bash /dependencies/pip-install.sh
 
-RUN rm -rf /tmp/* /var/lib/apt/lists/* /root/.cache/*
+COPY install/misc-install.sh /dependencies/
+RUN bash /dependencies/misc-install.sh
 
-USER software
+COPY install/extra-install.sh /dependencies/
+RUN bash /dependencies/extra-install.sh
 
-# ADD install/dot-ocamlinit /home/software/.ocamlinit
-RUN bash /home/software/ocaml-user-install.sh
-RUN opam user-setup install
-RUN rm /home/software/ocaml-user-install.sh
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /root/.cache /dependencies
 
-WORKDIR /home/software/cuauv/software
-CMD sudo service ssh start && echo "CUAUV Docker container running! C-c to stop the container" && cat
+
+# USER software
+# WORKDIR /home/software/cuauv/software
+# CMD ip a && sudo service ssh start && echo "CUAUV Docker container running! C-c to stop the container" && cat

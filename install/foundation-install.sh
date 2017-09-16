@@ -7,7 +7,9 @@ set -euo pipefail
 # later in the build process.
 
 # Debian dependencies solely for other foundational dependencies
-apt-get update
+export DEBIAN_FRONTEND=noninteractive
+apt-get update -y
+apt-get upgrade -y
 apt-get install -y apt-utils
 packages=(
     build-essential
@@ -26,11 +28,10 @@ packages=(
     python3-pip
     python3-scipy
     sudo
-    texlive
     xorg
     x11-apps
 )
-DEBIAN_FRONTEND=noninteractive apt-get install -y ${packages[@]}
+apt-get install -y ${packages[@]}
 
 # OpenCV
 
